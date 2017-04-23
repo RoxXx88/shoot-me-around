@@ -15,10 +15,13 @@ void AComponentController::AddBullet(AActor * NewBullet)
 {
 	OriginalBulletInstances.Add(NewBullet);
 
-	for (ArrayOfTranslatedObject &ToAddBullet : CopiedBulletInstances)
+	if (ActivateCopy)
 	{
-		AActor* CopiedBullet = SpawnCopy(NewBullet, ToAddBullet.Value);
-		ToAddBullet.Key.Add(CopiedBullet);
+		for (ArrayOfTranslatedObject &ToAddBullet : CopiedBulletInstances)
+		{
+			AActor* CopiedBullet = SpawnCopy(NewBullet, ToAddBullet.Value);
+			ToAddBullet.Key.Add(CopiedBullet);
+		}
 	}
 
 }
@@ -37,7 +40,11 @@ void AComponentController::BeginPlay()
 	Super::BeginPlay();
 
 	FillOriginalObjectsArray();
-	CreateCopiedInstances();
+
+	if (ActivateCopy)
+	{
+		CreateCopiedInstances();
+	}
 
 }
 
@@ -47,7 +54,12 @@ void AComponentController::Tick(float DeltaTime)
 
 	TeleportObjectsIfEscaping();
 
-	UpdateCopyTransform();
+	UpdateTriggerLimit();
+
+	if (ActivateCopy)
+	{
+		UpdateCopyTransform();
+	}
 
 }
 
@@ -241,7 +253,7 @@ void AComponentController::TeleportIfEscaping(AActor* Object)
 
 	if (PositiveX->IsOverlappingActor(Object))
 	{
-		Object->SetActorLocation(Object->GetActorLocation() + FVector(-FrontTranslation, 0, 0));
+   		Object->SetActorLocation(Object->GetActorLocation() + FVector(-FrontTranslation, 0, 0));
 	}
 	else if (NegativeX->IsOverlappingActor(Object))
 	{
@@ -304,28 +316,61 @@ void AComponentController::SimulateEventOnCopy(ACharacter* Original, EventType E
 void AComponentController::StartFire(ACharacter* Which)
 {
 
-	SimulateEventOnCopy(Which, EventType::START_FIRE);
+	if (ActivateCopy)
+	{
+		SimulateEventOnCopy(Which, EventType::START_FIRE);
+	}
 
 }
 
 void AComponentController::StopFire(ACharacter* Which)
 {
 
-	SimulateEventOnCopy(Which, EventType::STOP_FIRE);
+	if (ActivateCopy)
+	{
+		SimulateEventOnCopy(Which, EventType::STOP_FIRE);
+	}
 
 }
 
 void AComponentController::Crouch(ACharacter* Which)
 {
 
-	SimulateEventOnCopy(Which, EventType::CROUCH);
+	if (ActivateCopy)
+	{
+		SimulateEventOnCopy(Which, EventType::CROUCH);
+	}
 
 }
 
 void AComponentController::UnCrouch(ACharacter* Which)
 {
 
-	SimulateEventOnCopy(Which, EventType::UNCROUCH);
+	if (ActivateCopy)
+	{
+		SimulateEventOnCopy(Which, EventType::UNCROUCH);
+	}
+
+}
+
+void AComponentController::UpdateTriggerLimit()
+{
+	RightTranslation = World->GetComponentsBoundingBox().GetSize().Y;
+	FrontTranslation = World->GetComponentsBoundingBox().GetSize().X;
+
+	float WidthRadius = FrontTranslation /2.0f;
+	float HeightRadius = RightTranslation/2.0f;
+	FVector WorldLocation = World->GetActorLocation();
+
+	float TriggerLimitZ= PositiveX->GetActorLocation().Z;
+
+	PositiveX->SetActorLocation({ WorldLocation.X + (WidthRadius + DistanceFromBorder),WorldLocation.Y, TriggerLimitZ });
+
+	NegativeX->SetActorLocation({ WorldLocation.X - (WidthRadius + DistanceFromBorder),WorldLocation.Y, TriggerLimitZ });
+
+	PositiveY->SetActorLocation({ WorldLocation.X, WorldLocation.Y + (HeightRadius + DistanceFromBorder), TriggerLimitZ });
+
+	NegativeY->SetActorLocation({ WorldLocation.X, WorldLocation.Y - (HeightRadius + DistanceFromBorder), TriggerLimitZ });
 
 }
 
