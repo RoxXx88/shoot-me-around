@@ -36,16 +36,16 @@ void AComponentController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	TeleportObjectsIfEscaping();
-
 	UpdateTriggerLimit();
+
+	TeleportObjectsIfEscaping();
 }
 
 void AComponentController::FillOriginalObjectsArray()
 {
 	FConstPlayerControllerIterator PlayerControllers = GetWorld()->GetPlayerControllerIterator();
 	
-	for (int PlayerControllerIndex = 0; PlayerControllerIndex < GetWorld()->PlayerNum; ++PlayerControllerIndex, ++PlayerControllers)
+	for (int PlayerControllerIndex = 0; PlayerControllerIndex < NumPlayers; ++PlayerControllerIndex, ++PlayerControllers)
 	{
 		TAutoWeakObjectPtr<APlayerController> ActualPlayer = *PlayerControllers;
 		ACharacter* PlayerCharacter = ActualPlayer->GetCharacter();
@@ -125,7 +125,7 @@ void AComponentController::UpdateTriggerLimit()
 	RightTranslation = World->GetComponentsBoundingBox().GetSize().Y;
 	FrontTranslation = World->GetComponentsBoundingBox().GetSize().X;
 
-	float WidthRadius = FrontTranslation /2.0f;
+	float WidthRadius = FrontTranslation / 2.0f;
 	float HeightRadius = RightTranslation / 2.0f;
 
 	FVector WorldLocation = World->GetActorLocation();
