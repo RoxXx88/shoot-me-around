@@ -22,31 +22,49 @@ class SHOOTMEAROUND_API AComponentController : public AActor
 
 public:
 
+	enum EventType
+	{
+		START_FIRE,
+		STOP_FIRE,
+		CROUCH,
+		UNCROUCH
+	};
+
 	static const float MAX_TIMER_UPDATE_COPY;
 
 	UPROPERTY(Category = "Components", VisibleAnywhere, BlueprintReadOnly)
-		UBillboardComponent *Billboard;
+	UBillboardComponent *Billboard;
 
 	UPROPERTY(Category = "World", EditAnywhere, BlueprintReadWrite)
-		AStaticMeshActor* World;
+	AStaticMeshActor* World;
 
 	UPROPERTY(Category = "Players", EditAnywhere, BlueprintReadWrite)
-		int NumberOfPlayers;
+	int NumberOfPlayers;
 
 	UPROPERTY(Category = "Objects", EditAnywhere, BlueprintReadWrite)
-		TArray<AActor*> Objects;
+	TArray<AActor*> Objects;
 
 	UPROPERTY(Category = "Walls", EditAnywhere, BlueprintReadWrite)
-		AActor* PositiveX;
+	AActor* PositiveX;
 	UPROPERTY(Category = "Walls", EditAnywhere, BlueprintReadWrite)
-		AActor* NegativeX;
+	AActor* NegativeX;
 	UPROPERTY(Category = "Walls", EditAnywhere, BlueprintReadWrite)
-		AActor* PositiveY;
+	AActor* PositiveY;
 	UPROPERTY(Category = "Walls", EditAnywhere, BlueprintReadWrite)
-		AActor* NegativeY;
+	AActor* NegativeY;
 
 	UFUNCTION(BlueprintCallable, Category = "Bullets")
-		void AddBullet(AActor* NewBullet);
+	void AddBullet(AActor* NewBullet);
+
+
+	UFUNCTION(BlueprintCallable, Category = "CharacterInput")
+	void StartFire(ACharacter* Which);
+	UFUNCTION(BlueprintCallable, Category = "CharacterInput")
+	void StopFire(ACharacter* Which);
+	UFUNCTION(BlueprintCallable, Category = "CharacterInput")
+	void Crouch(ACharacter* Which);
+	UFUNCTION(BlueprintCallable, Category = "CharacterInput")
+	void UnCrouch(ACharacter* Which);
 
 private:
 
@@ -89,5 +107,7 @@ private:
 	void TeleportIfEscaping(AActor *Object);
 
 	void TranslateObject(AActor* ToTranslate, AActor* OriginalObject, const FVector &TranslateValue);
+
+	void SimulateEventOnCopy(ACharacter* Original, EventType Event);
 
 };

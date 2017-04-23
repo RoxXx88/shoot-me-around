@@ -9,7 +9,7 @@
 #include "Engine/StaticMeshActor.h"
 #include "ComponentController.h"
 
-const float AComponentController::MAX_TIMER_UPDATE_COPY = 0.001f;
+const float AComponentController::MAX_TIMER_UPDATE_COPY = 0.0001f;
 
 void AComponentController::AddBullet(AActor * NewBullet)
 {
@@ -76,6 +76,8 @@ void AComponentController::UpdateCopyTransform()
 		for (ACharacter* ToTranslate : CharacterToTranslate.Key)
 		{
 			TranslateObject(ToTranslate, OriginalCharacterInstances[OriginalObjectCounter], CharacterToTranslate.Value);
+
+			ToTranslate->GetMovementComponent()->Velocity = OriginalCharacterInstances[OriginalObjectCounter]->GetMovementComponent()->Velocity;
 
 			++OriginalObjectCounter;
 		}
@@ -267,6 +269,64 @@ void AComponentController::TranslateObject(AActor* ToTranslate, AActor* Original
 			ToTranslate->SetActorTransform(TransformToTranslate);
 		}
 	}
+}
+
+void AComponentController::SimulateEventOnCopy(ACharacter* Original, EventType Event)
+{
+
+	int OriginalObjectCounter = 0;
+
+	for (ACharacter* Searched : OriginalCharacterInstances)
+	{
+		if (Original == Searched)
+		{
+			for (ACharacter* ToEvent : CopiedCharacterInstances[OriginalObjectCounter].Key)
+			{
+				switch (Event)
+				{
+				case EventType::START_FIRE:
+						break;
+				case EventType::STOP_FIRE:
+						break;
+				case EventType::CROUCH:
+						break;
+				case EventType::UNCROUCH:
+						break;
+				}
+			}
+			break;
+		}
+
+		++OriginalObjectCounter;
+	}
+}
+
+void AComponentController::StartFire(ACharacter* Which)
+{
+
+	SimulateEventOnCopy(Which, EventType::START_FIRE);
+
+}
+
+void AComponentController::StopFire(ACharacter* Which)
+{
+
+	SimulateEventOnCopy(Which, EventType::STOP_FIRE);
+
+}
+
+void AComponentController::Crouch(ACharacter* Which)
+{
+
+	SimulateEventOnCopy(Which, EventType::CROUCH);
+
+}
+
+void AComponentController::UnCrouch(ACharacter* Which)
+{
+
+	SimulateEventOnCopy(Which, EventType::UNCROUCH);
+
 }
 
 
