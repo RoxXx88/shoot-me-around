@@ -44,6 +44,9 @@ public:
 	UPROPERTY(Category = "Objects", EditAnywhere, BlueprintReadWrite)
 	TArray<AActor*> Objects;
 
+	UPROPERTY(Category = "Copy", EditAnywhere, BlueprintReadWrite)
+	bool ActivateCopy = false;
+
 	UPROPERTY(Category = "Walls", EditAnywhere, BlueprintReadWrite)
 	AActor* PositiveX;
 	UPROPERTY(Category = "Walls", EditAnywhere, BlueprintReadWrite)
@@ -52,9 +55,12 @@ public:
 	AActor* PositiveY;
 	UPROPERTY(Category = "Walls", EditAnywhere, BlueprintReadWrite)
 	AActor* NegativeY;
+	UPROPERTY(Category = "Walls", EditAnywhere, BlueprintReadWrite)
+	float DistanceFromBorder;
 
 	UFUNCTION(BlueprintCallable, Category = "Bullets")
 	void AddBullet(AActor* NewBullet);
+
 
 
 	UFUNCTION(BlueprintCallable, Category = "CharacterInput")
@@ -109,5 +115,7 @@ private:
 	void TranslateObject(AActor* ToTranslate, AActor* OriginalObject, const FVector &TranslateValue);
 
 	void SimulateEventOnCopy(ACharacter* Original, EventType Event);
+
+	void UpdateTriggerLimit();
 
 };
