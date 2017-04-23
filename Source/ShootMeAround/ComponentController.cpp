@@ -254,7 +254,7 @@ void AComponentController::TeleportObjectsIfEscaping()
 void AComponentController::TeleportIfEscaping(AActor* Object)
 {
 
-	if (Object == nullptr) return;
+	if (Object == nullptr || !Object->IsValidLowLevel()) return;
 
 	if (Object->GetActorLocation().X > FrontTranslation/2.0f)
 	{
