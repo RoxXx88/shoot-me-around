@@ -36,6 +36,8 @@ AProjectile::AProjectile()
 	ProjectileMovement->ProjectileGravityScale = 0.f;
 	ProjectileMovement->Bounciness = 1.f;
 	ProjectileMovement->Friction = 0.f;
+	
+	//this->PrimaryActorTick.b
 }
 
 // Called when the game starts or when spawned.
@@ -68,6 +70,16 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimi
 	else if ((OtherActor != NULL) && (OtherActor != this) && (OtherComp != NULL) && OtherComp->IsSimulatingPhysics()) // Only add impulse and destroy projectile if we hit a physics
 	{
 		OtherComp->AddImpulseAtLocation(GetVelocity() * 100.0f, GetActorLocation());
+	}
+}
+
+void AProjectile::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	if (GetActorLocation().X > 10000 || GetActorLocation().Y > 10000 || GetActorLocation().X < -10000 || GetActorLocation().Y < -10000)
+	{
+		DeleteObject();
 	}
 }
 
