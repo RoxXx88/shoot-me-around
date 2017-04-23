@@ -6,7 +6,6 @@
 AProjectile::AProjectile()
 {
 	// Use a sphere as a simple collision representation.
-
 	SphereCollision = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComponent"));
 	SphereCollision->InitSphereRadius(5.0f);
 	SphereCollision->BodyInstance.SetCollisionProfileName("Projectile");
@@ -16,11 +15,18 @@ AProjectile::AProjectile()
 	SphereCollision->CanCharacterStepUpOn = ECB_No;
 
 	// Set as root component.
-
 	RootComponent = SphereCollision;
 
-	// Use a ProjectileMovementComponent to govern this projectile's movement.
+	// Set visual mesh
+	VisualMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("VisualRepresentation"));
+	VisualMesh->SetupAttachment(RootComponent);
+	VisualMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
+	// Set particle system
+	ParticleSystem = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("ParticleSystem"));
+	ParticleSystem->SetupAttachment(RootComponent);
+
+	// Use a ProjectileMovementComponent to govern this projectile's movement.
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileComp"));
 	ProjectileMovement->UpdatedComponent = SphereCollision;
 	ProjectileMovement->InitialSpeed = 3000.f;
@@ -51,10 +57,21 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimi
 	{
 		FDamageEvent DamageEvent;
 		OtherActor->TakeDamage(PlayerDamage, DamageEvent, NULL, this);
-		Destroy();
+		RootComponent = ParticleSystem;
+		SphereCollision->DestroyComponent();
+		VisualMesh->DestroyComponent();
+		ProjectileMovement->DestroyComponent();
+		ParticleSystem->Deactivate();
+		FTimerHandle TimerHandle;
+		GetWorldTimerManager().SetTimer(TimerHandle, this, &AProjectile::DeleteObject, 5.0f, false);
 	}
 	else if ((OtherActor != NULL) && (OtherActor != this) && (OtherComp != NULL) && OtherComp->IsSimulatingPhysics()) // Only add impulse and destroy projectile if we hit a physics
 	{
 		OtherComp->AddImpulseAtLocation(GetVelocity() * 100.0f, GetActorLocation());
 	}
+}
+
+void AProjectile::DeleteObject()
+{
+	Destroy();
 }

@@ -21,10 +21,20 @@ public:
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
+	void DeleteObject();
+
 private:
 	
 	UPROPERTY(VisibleDefaultsOnly, Category = Projectile)
 	class USphereComponent* SphereCollision;
+
+	/** Projectile 3D Mesh */
+	UPROPERTY(VisibleAnywhere, Category = Mesh)
+	class UStaticMeshComponent* VisualMesh;
+
+	/** Projectile particles */
+	UPROPERTY(VisibleAnywhere, Category = Particle)
+	class UParticleSystemComponent* ParticleSystem;
 
 	/** Projectile movement component */
 	UPROPERTY(VisibleAnywhere, Category = Movement)
