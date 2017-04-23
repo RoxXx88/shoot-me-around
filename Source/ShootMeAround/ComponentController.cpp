@@ -9,6 +9,8 @@
 #include "Engine/StaticMeshActor.h"
 #include "ComponentController.h"
 
+#pragma optimize ("",off)
+
 const float AComponentController::MAX_TIMER_UPDATE_COPY = 0.0001f;
 
 void AComponentController::AddBullet(AActor * NewBullet)
@@ -51,6 +53,9 @@ void AComponentController::BeginPlay()
 void AComponentController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	RightTranslation = World->GetComponentsBoundingBox().GetSize().Y;
+	FrontTranslation = World->GetComponentsBoundingBox().GetSize().X;
 
 	TeleportObjectsIfEscaping();
 
@@ -251,20 +256,20 @@ void AComponentController::TeleportIfEscaping(AActor* Object)
 
 	if (Object == nullptr) return;
 
-	if (PositiveX->IsOverlappingActor(Object))
+	if (Object->GetActorLocation().X > FrontTranslation/2.0f)
 	{
    		Object->SetActorLocation(Object->GetActorLocation() + FVector(-FrontTranslation, 0, 0));
 	}
-	else if (NegativeX->IsOverlappingActor(Object))
+	else if (Object->GetActorLocation().X < -FrontTranslation / 2.0f)
 	{
 		Object->SetActorLocation(Object->GetActorLocation() + FVector(FrontTranslation, 0, 0));
 	}
 
-	if (PositiveY->IsOverlappingActor(Object))
+	if (Object->GetActorLocation().Y > RightTranslation / 2.0f)
 	{
 		Object->SetActorLocation(Object->GetActorLocation() + FVector(0, -RightTranslation, 0));
 	}
-	else if (NegativeY->IsOverlappingActor(Object))
+	else if (Object->GetActorLocation().Y < -RightTranslation / 2.0f)
 	{
 		Object->SetActorLocation(Object->GetActorLocation() + FVector(0, RightTranslation, 0));
 	}
@@ -355,8 +360,6 @@ void AComponentController::UnCrouch(ACharacter* Which)
 
 void AComponentController::UpdateTriggerLimit()
 {
-	RightTranslation = World->GetComponentsBoundingBox().GetSize().Y;
-	FrontTranslation = World->GetComponentsBoundingBox().GetSize().X;
 
 	float WidthRadius = FrontTranslation /2.0f;
 	float HeightRadius = RightTranslation/2.0f;
