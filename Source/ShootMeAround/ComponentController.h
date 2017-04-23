@@ -101,7 +101,7 @@ private:
 
 	void CreateCopiedInstances();
 	void CreateCopiedInstancesWithTranslation(float XTranslation, float YTranslation);
-	AActor* AComponentController::SpawnCopy(AActor* OriginalObject, FVector Translation, bool SetTemplate = false);
+	AActor* SpawnCopy(AActor* OriginalObject, FVector Translation, bool SetTemplate = false);
 
 	void TeleportObjectsIfEscaping();
 	void TeleportIfEscaping(AActor *Object);
