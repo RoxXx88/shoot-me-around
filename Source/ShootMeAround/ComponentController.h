@@ -20,6 +20,9 @@ public:
 	UPROPERTY(Category = "World", EditAnywhere, BlueprintReadWrite)
 	AStaticMeshActor* World;
 
+	UPROPERTY(Category = "Players", EditAnywhere, BlueprintReadWrite)
+	int NumPlayers = 2;
+
 	UPROPERTY(Category = "Objects", EditAnywhere, BlueprintReadWrite)
 	TArray<AActor*> Objects;
 
