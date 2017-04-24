@@ -164,16 +164,16 @@ void AComponentController::UpdateTriggerLimit()
 	RightTranslation = World->GetComponentsBoundingBox().GetSize().Y;
 	FrontTranslation = World->GetComponentsBoundingBox().GetSize().X;
 
-	float WidthRadius = FrontTranslation / 2.0f;
-	float HeightRadius = RightTranslation / 2.0f;
+	//float WidthRadius = FrontTranslation / 2.0f;
+	//float HeightRadius = RightTranslation / 2.0f;
 
-	FVector WorldLocation = World->GetActorLocation();
+	//FVector WorldLocation = World->GetActorLocation();
 
-	float TriggerLimitZ = PositiveX->GetActorLocation().Z;
+	//float TriggerLimitZ = PositiveX->GetActorLocation().Z;
 
-	PositiveX->SetActorLocation({ WorldLocation.X + WidthRadius, WorldLocation.Y, TriggerLimitZ });
-	PositiveY->SetActorLocation({ WorldLocation.X, WorldLocation.Y + HeightRadius, TriggerLimitZ });
+	//PositiveX->SetActorLocation({ WorldLocation.X + WidthRadius, WorldLocation.Y, TriggerLimitZ });
+	//PositiveY->SetActorLocation({ WorldLocation.X, WorldLocation.Y + HeightRadius, TriggerLimitZ });
 
-	NegativeX->SetActorLocation({ WorldLocation.X - WidthRadius, WorldLocation.Y, TriggerLimitZ });
-	NegativeY->SetActorLocation({ WorldLocation.X, WorldLocation.Y - HeightRadius, TriggerLimitZ });
+	//NegativeX->SetActorLocation({ WorldLocation.X - WidthRadius, WorldLocation.Y, TriggerLimitZ });
+	//NegativeY->SetActorLocation({ WorldLocation.X, WorldLocation.Y - HeightRadius, TriggerLimitZ });
 }
