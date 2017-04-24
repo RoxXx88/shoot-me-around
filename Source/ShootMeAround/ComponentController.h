@@ -28,12 +28,6 @@ public:
 
 	UPROPERTY(Category = "Walls", EditAnywhere, BlueprintReadWrite)
 	AActor* PositiveX;
-	UPROPERTY(Category = "Walls", EditAnywhere, BlueprintReadWrite)
-	AActor* NegativeX;
-	UPROPERTY(Category = "Walls", EditAnywhere, BlueprintReadWrite)
-	AActor* PositiveY;
-	UPROPERTY(Category = "Walls", EditAnywhere, BlueprintReadWrite)
-	AActor* NegativeY;
 
 	UPROPERTY(Category = "Components", VisibleAnywhere, BlueprintReadOnly)
 	UBillboardComponent* Billboard;
