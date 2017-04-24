@@ -10,6 +10,8 @@
 
 #include "ComponentController.h"
 
+#pragma optimize ("",off)
+
 AComponentController::AComponentController()
 {
 	PrimaryActorTick.bCanEverTick = true;
@@ -29,13 +31,14 @@ void AComponentController::BeginPlay()
 {
 	Super::BeginPlay();
 
+	RightTranslation = 5000;
+	FrontTranslation = 5000;
+
 }
 
 void AComponentController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	UpdateTriggerLimit();
 
 	TeleportObjectsIfEscaping();
 }
@@ -160,8 +163,8 @@ void AComponentController::TeleportIfEscaping(AActor* Object)
 
 void AComponentController::UpdateTriggerLimit()
 {
-	RightTranslation = World->GetComponentsBoundingBox().GetSize().Y - 10000.f;
-	FrontTranslation = World->GetComponentsBoundingBox().GetSize().X - 10000.f;
+	//RightTranslation = World->GetComponentsBoundingBox().GetSize().Y - 10000.f;
+	//FrontTranslation = World->GetComponentsBoundingBox().GetSize().X - 10000.f;
 
 	//float WidthRadius = FrontTranslation / 2.0f;
 	//float HeightRadius = RightTranslation / 2.0f;
