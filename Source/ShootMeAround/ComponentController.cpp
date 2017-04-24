@@ -161,8 +161,8 @@ void AComponentController::TeleportIfEscaping(AActor* Object)
 
 void AComponentController::UpdateTriggerLimit()
 {
-	RightTranslation = World->GetComponentsBoundingBox().GetSize().Y;
-	FrontTranslation = World->GetComponentsBoundingBox().GetSize().X;
+	RightTranslation = World->GetComponentsBoundingBox().GetSize().Y - 10000.f;
+	FrontTranslation = World->GetComponentsBoundingBox().GetSize().X - 10000.f;
 
 	//float WidthRadius = FrontTranslation / 2.0f;
 	//float HeightRadius = RightTranslation / 2.0f;
