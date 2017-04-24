@@ -29,7 +29,6 @@ void AComponentController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	FillOriginalObjectsArray();
 }
 
 void AComponentController::Tick(float DeltaTime)
