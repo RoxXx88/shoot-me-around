@@ -35,14 +35,15 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Bullets")
 	void AddBullet(AActor* NewBullet);
 
+	UFUNCTION(BlueprintCallable, Category = "Fill")
+	void FillOriginalObjectsArray();
+
 protected:
 
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 
 private:
-
-	void FillOriginalObjectsArray();
 
 	void TeleportObjectsIfEscaping();
 	void TeleportIfEscaping(AActor *Object);
