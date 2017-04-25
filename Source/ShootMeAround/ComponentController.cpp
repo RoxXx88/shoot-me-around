@@ -69,46 +69,7 @@ void AComponentController::TeleportObjectsIfEscaping()
 
 	for (AActor* Object : OriginalCharacterInstances)
 	{
-		if (Object == nullptr || !Object->IsValidLowLevel())
-		{
-			return;
-		}
-
-		FVector CurrLocation = Object->GetActorLocation() + FVector(-405,0,0);
-
-		// Check top.
-
-		if (CurrLocation.X > FrontTranslation / 2.0f)
-		{
-			FVector NewLocation = Object->GetActorLocation();
-			NewLocation.X -= FrontTranslation;
-
-   			Object->SetActorLocation(NewLocation);
-		}
-		else if (CurrLocation.X < -FrontTranslation / 2.0f) // Check bottom.
-		{
-			FVector NewLocation = Object->GetActorLocation();
-			NewLocation.X += FrontTranslation;
-
-			Object->SetActorLocation(NewLocation);
-		}
-
-		// Check right.
-
-		if (CurrLocation.Y > RightTranslation / 2.0f)
-		{
-			FVector NewLocation = Object->GetActorLocation();
-			NewLocation.Y -= RightTranslation;
-
-			Object->SetActorLocation(NewLocation);
-		}
-		else if (CurrLocation.Y < -RightTranslation / 2.0f) // Check left.
-		{
-			FVector NewLocation = Object->GetActorLocation();
-			NewLocation.Y += RightTranslation;
-
-			Object->SetActorLocation(NewLocation);
-		}
+		TeleportIfEscaping(Object);
 	}
 
 	for (AActor* Object : OriginalBulletInstances)
@@ -124,20 +85,20 @@ void AComponentController::TeleportIfEscaping(AActor* Object)
 		return;
 	}
 
-	FVector CurrLocation = Object->GetActorLocation();
+	FVector CurrLocation = Object->GetActorLocation() + FVector(-DistanzaCamera, 0, 0);
 
 	// Check top.
 
 	if (CurrLocation.X > FrontTranslation / 2.0f)
 	{
-		FVector NewLocation = CurrLocation;
+		FVector NewLocation = Object->GetActorLocation();
 		NewLocation.X -= FrontTranslation;
 
-   		Object->SetActorLocation(NewLocation);
+		Object->SetActorLocation(NewLocation);
 	}
 	else if (CurrLocation.X < -FrontTranslation / 2.0f) // Check bottom.
 	{
-		FVector NewLocation = CurrLocation;
+		FVector NewLocation = Object->GetActorLocation();
 		NewLocation.X += FrontTranslation;
 
 		Object->SetActorLocation(NewLocation);
@@ -147,14 +108,14 @@ void AComponentController::TeleportIfEscaping(AActor* Object)
 
 	if (CurrLocation.Y > RightTranslation / 2.0f)
 	{
-		FVector NewLocation = CurrLocation;
+		FVector NewLocation = Object->GetActorLocation();
 		NewLocation.Y -= RightTranslation;
 
 		Object->SetActorLocation(NewLocation);
 	}
 	else if (CurrLocation.Y < -RightTranslation / 2.0f) // Check left.
 	{
-		FVector NewLocation = CurrLocation;
+		FVector NewLocation = Object->GetActorLocation();
 		NewLocation.Y += RightTranslation;
 
 		Object->SetActorLocation(NewLocation);

@@ -32,6 +32,9 @@ public:
 	UPROPERTY(Category = "Components", VisibleAnywhere, BlueprintReadOnly)
 	UBillboardComponent* Billboard;
 
+	UPROPERTY(Category = "Camera", EditAnywhere, BlueprintReadWrite)
+	int DistanzaCamera;
+
 	UFUNCTION(BlueprintCallable, Category = "Bullets")
 	void AddBullet(AActor* NewBullet);
 
