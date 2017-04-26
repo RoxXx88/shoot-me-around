@@ -15,6 +15,6 @@ class SHOOTMEAROUND_API UShootMeAroundGameViewportClient : public UGameViewportC
 	
 	
 	virtual bool InputKey(FViewport* Viewport, int32 ControllerId, FKey Key, EInputEvent EventType, float AmountDepressed = 1.f, bool bGamepad = false) override;
-	virtual bool InputAxis(FViewport* Viewport, int32 ControllerId, FKey Key, float Delta, float DeltaTime, int32 NumSamples = 1, bool bGamepad = false) override;
 	
+
 };
