@@ -9,3 +9,4 @@ ShootMeAround.sln
 Resources/
 Build/WindowsNoEditor/FileOpenOrder/EditorOpenOrder.log
 Build/WindowsNoEditor/FileOpenOrder/CookerOpenOrder.log
+*.suo
